@@ -10,6 +10,13 @@
     'Helvetica', 'Arial', sans-serif;
 }
 
+.nav a {
+  text-decoration: none;
+  color: #c4c4c4;
+}
+.nav a:hover {
+  color: #fff;
+}
 .logo {
   height: 40px;
   width: 80px;
@@ -26,8 +33,8 @@
 }
 
 .logo:hover {
-  border: 1px solid tomato;
-  background-color: tomato;
+  border: 1px solid #c4c4c4;
+  background-color: #c4c4c4;
 }
 .nav ul {
   display: flex;
@@ -46,4 +53,8 @@
 }
 .nav div {
   color: #c4c4c4;
+}
+
+.activeLink {
+  color: #fff !important;
 }
