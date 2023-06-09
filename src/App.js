@@ -1,7 +1,8 @@
 import './App.css';
 import React from 'react';
 import Navbar from './components/Layout/Navbar';
-import Home from './components/Pages/Home';
+// import Home from './components/Pages/Home';
+import AdminPanel from './components/admin/AdminPanel';
 import Laptops from './components/Pages/Laptops';
 import Pads from './components/Pages/Pads';
 import Accessories from './components/Pages/Accessories';
@@ -14,7 +15,7 @@ function App() {
       <div className="App">
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<AdminPanel />} />
           <Route path="/laptops" element={<Laptops />} />
           <Route path="/pads" element={<Pads />} />
           <Route path="/cellPhones" element={<CellPhones />} />
