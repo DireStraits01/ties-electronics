@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 function ImageUpload({ folderType }) {
-  const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState('');
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);

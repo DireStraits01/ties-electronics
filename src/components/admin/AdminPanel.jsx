@@ -3,12 +3,14 @@ import { db } from '../config/firebase'; // make sure to import db from your Fir
 import { collection, addDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import style from './Admin.module.css';
+import Items from './Items';
 
 function AdminPanel() {
   const [itemType, setItemType] = useState('laptop');
   const [imageItem, setImageItem] = useState('');
   const [itemBrand, setItemBrand] = useState('');
   const [itemModel, setItemModel] = useState('');
+  const [itemStorage, setItemStorage] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [itemPrice, setItemPrice] = useState(0);
   const [image, setImage] = useState(null);
@@ -20,6 +22,7 @@ function AdminPanel() {
       image: imageItem,
       brand: itemBrand,
       model: itemModel,
+      storage: itemStorage,
       description: itemDescription,
       price: itemPrice,
     });
@@ -27,6 +30,7 @@ function AdminPanel() {
     setImageItem('');
     setItemBrand('');
     setItemModel('');
+    setItemStorage('');
     setItemDescription('');
     setItemPrice(0);
   };
@@ -74,6 +78,12 @@ function AdminPanel() {
       />
       <input
         type="text"
+        value={itemStorage}
+        onChange={(e) => setItemStorage(e.target.value)}
+        placeholder="storage"
+      />
+      <input
+        type="text"
         value={itemDescription}
         onChange={(e) => setItemDescription(e.target.value)}
         placeholder="description"
@@ -93,6 +103,8 @@ function AdminPanel() {
       >
         Add Item
       </button>
+
+      <Items />
     </>
   );
 }
