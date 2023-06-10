@@ -11,6 +11,7 @@ function AdminPanel() {
   const [itemBrand, setItemBrand] = useState('');
   const [itemModel, setItemModel] = useState('');
   const [itemStorage, setItemStorage] = useState('');
+  const [itemColor, setItemColor] = useState('');
   const [itemDescription, setItemDescription] = useState('');
   const [itemPrice, setItemPrice] = useState(0);
   const [image, setImage] = useState(null);
@@ -23,6 +24,7 @@ function AdminPanel() {
       brand: itemBrand,
       model: itemModel,
       storage: itemStorage,
+      storage: itemColor,
       description: itemDescription,
       price: itemPrice,
     });
@@ -31,6 +33,7 @@ function AdminPanel() {
     setItemBrand('');
     setItemModel('');
     setItemStorage('');
+    setItemColor('');
     setItemDescription('');
     setItemPrice(0);
   };
@@ -81,6 +84,12 @@ function AdminPanel() {
         value={itemStorage}
         onChange={(e) => setItemStorage(e.target.value)}
         placeholder="storage"
+      />
+      <input
+        type="text"
+        value={itemColor}
+        onChange={(e) => setItemColor(e.target.value)}
+        placeholder="color"
       />
       <input
         type="text"
