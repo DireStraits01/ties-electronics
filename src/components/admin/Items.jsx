@@ -1,17 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import style from './Admin.module.css';
-import { db } from '../config/firebase';
-import { collection, getDocs } from 'firebase/firestore';
 
-function Items() {
-  const [items, setItems] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getDocs(collection(db, 'items'));
-      setItems(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
-    fetchData();
-  }, []);
+function Items({ items }) {
   return (
     <>
       <table className={style.table}>
@@ -29,21 +19,22 @@ function Items() {
           </tr>
         </thead>
         <tbody>
-          {items.map((item, index) => (
-            <tr key={index}>
-              <th>{item.type}</th>
-              <th>
-                <p>image</p>
-              </th>
-              <th>{item.brand}</th>
-              <th>{item.model}</th>
-              <th>{item.storage}</th>
-              <th>{item.color}</th>
-              <th>{item.description}</th>
-              <th>{item.price}</th>
-              <th>x</th>
-            </tr>
-          ))}
+          {items &&
+            items.map((item, index) => (
+              <tr key={index}>
+                <th>{item.type}</th>
+                <th>
+                  <img src={item.image} alt="" width="20%" />
+                </th>
+                <th>{item.brand}</th>
+                <th>{item.model}</th>
+                <th>{item.storage}</th>
+                <th>{item.color}</th>
+                <th>{item.description}</th>
+                <th>{item.price}</th>
+                <th>x</th>
+              </tr>
+            ))}
         </tbody>
       </table>
     </>

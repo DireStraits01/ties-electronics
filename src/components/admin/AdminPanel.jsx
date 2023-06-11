@@ -1,13 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { db } from '../config/firebase'; // make sure to import db from your Firebase config
-import { collection, addDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import style from './Admin.module.css';
 import Items from './Items';
 
-function AdminPanel() {
+function AdminPanel({ items, setItems }) {
   const [itemType, setItemType] = useState('laptop');
-  const [imageItem, setImageItem] = useState('');
   const [itemBrand, setItemBrand] = useState('');
   const [itemModel, setItemModel] = useState('');
   const [itemStorage, setItemStorage] = useState('');
@@ -18,18 +16,27 @@ function AdminPanel() {
   const [imageUrl, setImageUrl] = useState('');
 
   const addItem = async () => {
-    const docRef = await addDoc(collection(db, 'items'), {
+    await addDoc(collection(db, 'items'), {
       type: itemType,
-      image: imageItem,
+      image: imageUrl,
       brand: itemBrand,
       model: itemModel,
       storage: itemStorage,
-      storage: itemColor,
+      color: itemColor,
       description: itemDescription,
       price: itemPrice,
     });
+
+    // Refresh items after adding a new item.
+    const data = await getDocs(collection(db, 'items'));
+    setItems(
+      data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }))
+    );
+
     setItemType('');
-    setImageItem('');
     setItemBrand('');
     setItemModel('');
     setItemStorage('');
@@ -46,13 +53,17 @@ function AdminPanel() {
 
   const fileInput = useRef();
   const handleUpload = async () => {
-    const storage = getStorage();
-    const storageRef = ref(storage, `${itemType}/${image.name}`);
+    const storageRef = ref(getStorage(), `${itemType}/${image.name}`);
     const snapshot = await uploadBytes(storageRef, image);
     const url = await getDownloadURL(snapshot.ref);
     setImageUrl(url);
     fileInput.current.value = ''; // clear the file input field
   };
+  useEffect(() => {
+    if (imageUrl !== '') {
+      addItem();
+    }
+  }, [imageUrl]);
   return (
     <>
       <select
@@ -105,15 +116,13 @@ function AdminPanel() {
       />
       <input type="file" onChange={handleImageChange} ref={fileInput} />
       <button
-        onClick={() => {
-          handleUpload();
-          addItem();
+        onClick={async () => {
+          await handleUpload();
         }}
       >
         Add Item
       </button>
-
-      <Items />
+      <Items items={items} />
     </>
   );
 }
