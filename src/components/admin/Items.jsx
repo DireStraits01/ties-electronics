@@ -1,7 +1,7 @@
 import React from 'react';
 import style from './Admin.module.css';
 
-function Items({ items }) {
+function Items({ items, deleteItemHandle, deleteImageHandle }) {
   return (
     <>
       <table className={style.table}>
@@ -32,7 +32,14 @@ function Items({ items }) {
                 <th>{item.color}</th>
                 <th>{item.description}</th>
                 <th>{item.price}</th>
-                <th>x</th>
+                <th>
+                  <button
+                    onClick={() => {
+                      deleteItemHandle(item.id);
+                      deleteImageHandle(item.image);
+                    }}
+                  ></button>
+                </th>
               </tr>
             ))}
         </tbody>

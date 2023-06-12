@@ -1,7 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import {
+  collection,
+  getDocs,
+  addDoc,
+  doc,
+  deleteDoc,
+} from 'firebase/firestore';
 import { db } from '../config/firebase'; // make sure to import db from your Firebase config
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
 import Items from './Items';
 
 function AdminPanel({ items, setItems }) {
@@ -45,6 +57,12 @@ function AdminPanel({ items, setItems }) {
     setItemPrice(0);
   };
 
+  const deleteData = async (id) => {
+    await deleteDoc(doc(db, 'items', id));
+    const data = await getDocs(collection(db, 'items'));
+    console.log(`data: ${data} and docs: ${data.docs}`);
+    setItems(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
@@ -64,6 +82,10 @@ function AdminPanel({ items, setItems }) {
       addItem();
     }
   }, [imageUrl]);
+
+  const deleteImage = (imagePath) => {
+    deleteObject(ref(getStorage(), imagePath));
+  };
   return (
     <>
       <select
@@ -122,7 +144,11 @@ function AdminPanel({ items, setItems }) {
       >
         Add Item
       </button>
-      <Items items={items} />
+      <Items
+        items={items}
+        deleteItemHandle={deleteData}
+        deleteImageHandle={deleteImage}
+      />
     </>
   );
 }
