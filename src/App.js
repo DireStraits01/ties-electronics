@@ -11,6 +11,7 @@ import Accessories from './components/Pages/Accessories';
 import Watchs from './components/Pages/Watchs';
 import CellPhones from './components/Pages/CellPhones';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   const [items, setItems] = useState([]);
 

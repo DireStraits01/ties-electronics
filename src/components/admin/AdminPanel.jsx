@@ -1,4 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { FcAddImage } from 'react-icons/fc';
+import Button from 'react-bootstrap/Button';
+import style from './Admin.module.css';
 import {
   collection,
   getDocs,
@@ -26,6 +29,7 @@ function AdminPanel({ items, setItems }) {
   const [itemPrice, setItemPrice] = useState(0);
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
+  const [addedImageName, setAddedImageName] = useState(' добавьте изображение');
 
   const addItem = async () => {
     await addDoc(collection(db, 'items'), {
@@ -66,6 +70,7 @@ function AdminPanel({ items, setItems }) {
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
+      setAddedImageName(e.target.files[0].name);
     }
   };
 
@@ -86,69 +91,85 @@ function AdminPanel({ items, setItems }) {
   const deleteImage = (imagePath) => {
     deleteObject(ref(getStorage(), imagePath));
   };
+
   return (
     <>
-      <select
-        value={itemType}
-        onChange={(e) => {
-          setItemType(e.target.value);
-        }}
-      >
-        <option value="laptops">Laptops</option>
-        <option value="cellphones">Cellphones</option>
-        <option value="pads">Pads</option>
-        <option value="watch">Watch</option>
-        <option value="accessories">Accessories</option>
-      </select>
-      <input
-        type="text"
-        value={itemBrand}
-        onChange={(e) => setItemBrand(e.target.value)}
-        placeholder="Item brand"
-      />
-      <input
-        type="text"
-        value={itemModel}
-        onChange={(e) => setItemModel(e.target.value)}
-        placeholder="series"
-      />
-      <input
-        type="text"
-        value={itemStorage}
-        onChange={(e) => setItemStorage(e.target.value)}
-        placeholder="storage"
-      />
-      <input
-        type="text"
-        value={itemColor}
-        onChange={(e) => setItemColor(e.target.value)}
-        placeholder="color"
-      />
-      <input
-        type="text"
-        value={itemDescription}
-        onChange={(e) => setItemDescription(e.target.value)}
-        placeholder="description"
-      />
-      <input
-        type="text"
-        value={itemPrice}
-        onChange={(e) => setItemPrice(e.target.value)}
-        placeholder="price"
-      />
-      <input type="file" onChange={handleImageChange} ref={fileInput} />
-      <button
-        onClick={async () => {
-          await handleUpload();
-        }}
-      >
-        Add Item
-      </button>
-      <Items
-        items={items}
-        deleteItemHandle={deleteData}
-        deleteImageHandle={deleteImage}
-      />
+      <div className={style.admin_panel}>
+        <select
+          value={itemType}
+          onChange={(e) => {
+            setItemType(e.target.value);
+          }}
+        >
+          <option value="laptops">Laptops</option>
+          <option value="cellphones">Cellphones</option>
+          <option value="pads">Pads</option>
+          <option value="watch">Watch</option>
+          <option value="accessories">Accessories</option>
+        </select>
+        <input
+          type="text"
+          value={itemBrand}
+          onChange={(e) => setItemBrand(e.target.value)}
+          placeholder="Item brand"
+        />
+        <input
+          type="text"
+          value={itemModel}
+          onChange={(e) => setItemModel(e.target.value)}
+          placeholder="series"
+        />
+        <input
+          type="text"
+          value={itemStorage}
+          onChange={(e) => setItemStorage(e.target.value)}
+          placeholder="storage"
+        />
+        <input
+          type="text"
+          value={itemColor}
+          onChange={(e) => setItemColor(e.target.value)}
+          placeholder="color"
+        />
+        <input
+          type="text"
+          value={itemDescription}
+          onChange={(e) => setItemDescription(e.target.value)}
+          placeholder="description"
+        />
+        <input
+          type="text"
+          value={itemPrice}
+          onChange={(e) => setItemPrice(e.target.value)}
+          placeholder="price"
+        />
+        <div class="image-upload">
+          <label for="image-upload" style={{ cursor: 'pointer' }}>
+            <FcAddImage style={{ fontSize: '32px' }} />
+            {addedImageName}
+          </label>
+          <input
+            type="file"
+            id="image-upload"
+            onChange={handleImageChange}
+            ref={fileInput}
+            style={{ display: 'none' }}
+          />
+        </div>
+        <Button
+          variant="success"
+          onClick={async () => {
+            await handleUpload();
+          }}
+        >
+          Add Item
+        </Button>
+        <Items
+          items={items}
+          deleteItemHandle={deleteData}
+          deleteImageHandle={deleteImage}
+        />
+      </div>
     </>
   );
 }
