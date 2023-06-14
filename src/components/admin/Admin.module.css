@@ -11,7 +11,10 @@
   flex-direction: row;
   font-size: 30px;
 }
-
+.iconsAdminPanel > div {
+  margin-right: 15px;
+  cursor: pointer;
+}
 .AddNewItemOptions {
   display: flex;
   flex-direction: row;

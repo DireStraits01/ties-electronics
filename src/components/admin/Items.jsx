@@ -1,8 +1,9 @@
 import React from 'react';
 import style from './Items.module.css';
 import PopUp from './PopUp';
-
+import { FcDeleteRow } from 'react-icons/fc';
 function Items({ items, deleteItemHandle, deleteImageHandle }) {
+  const iconDelRow = <FcDeleteRow />;
   return (
     <>
       <div className={style.table_backrgound}>
@@ -45,7 +46,13 @@ function Items({ items, deleteItemHandle, deleteImageHandle }) {
                     <td>{item.description}</td>
                     <td>{item.price}</td>
                     <td>
-                      <PopUp>
+                      <PopUp
+                        icon={iconDelRow}
+                        saveChanges={() => {
+                          deleteItemHandle(item.id);
+                          deleteImageHandle(item.image);
+                        }}
+                      >
                         <p>textetxtxtetext</p>
                       </PopUp>
                     </td>

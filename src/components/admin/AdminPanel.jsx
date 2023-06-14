@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { FcAddImage, FcAddDatabase, FcDeleteDatabase } from 'react-icons/fc';
-import Button from 'react-bootstrap/Button';
 import style from './Admin.module.css';
 import {
   collection,
@@ -68,6 +67,10 @@ function AdminPanel({ items, setItems }) {
     console.log(`data: ${data} and docs: ${data.docs}`);
     setItems(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
+
+  const deleteImage = (imagePath) => {
+    deleteObject(ref(getStorage(), imagePath));
+  };
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
@@ -90,9 +93,6 @@ function AdminPanel({ items, setItems }) {
     }
   }, [imageUrl]);
 
-  const deleteImage = (imagePath) => {
-    deleteObject(ref(getStorage(), imagePath));
-  };
   const iconAddLine = <FcAddDatabase />;
   return (
     <>
@@ -164,14 +164,6 @@ function AdminPanel({ items, setItems }) {
                     style={{ display: 'none' }}
                   />
                 </div>
-                {/* <Button
-                  variant="success"
-                  onClick={async () => {
-                    await handleUpload();
-                  }}
-                >
-                  Add Item
-                </Button> */}
               </div>
             </div>
           </PopUp>
