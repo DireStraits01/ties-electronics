@@ -1,12 +1,11 @@
 .table_backrgound {
-  padding-top: 10px;
   background-color: rgba(71, 147, 227, 1);
   height: 100vh;
 }
 /* Table Styles */
 
 .table_wrapper {
-  margin: 10px 70px 70px;
+  /* margin: 0px 70px 70px; */
   box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.2);
 
   -webkit-font-smoothing: antialiased;
