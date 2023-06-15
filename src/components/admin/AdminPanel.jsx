@@ -52,7 +52,7 @@ function AdminPanel({ items, setItems }) {
       }))
     );
 
-    setItemType('');
+    setItemType('laptop');
     setItemBrand('');
     setItemModel('');
     setItemStorage('');

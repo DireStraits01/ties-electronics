@@ -1,8 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import style from './Items.module.css';
 import PopUp from './PopUp';
 import { FcDeleteRow } from 'react-icons/fc';
 function Items({ items, deleteItemHandle, deleteImageHandle }) {
+  const [isCheked, setIsChecked] = useState({});
+  const [allIsChecked, setAllIsChecked] = useState(false);
+  const [boxBoolian, setBoxBoolian] = useState(false);
+  const handleCheckBox = (index) => {
+    setIsChecked({ ...isCheked, [index]: !isCheked[index] });
+  };
+
+  const handleAllCheckBoxes = () => {
+    if (!allIsChecked) {
+      setAllIsChecked(true);
+      setBoxBoolian(true);
+    } else {
+      setAllIsChecked(false);
+      setBoxBoolian(false);
+    }
+  };
   const iconDelRow = <FcDeleteRow />;
   return (
     <>
@@ -26,14 +42,24 @@ function Items({ items, deleteItemHandle, deleteImageHandle }) {
             <tbody>
               <tr>
                 <td>
-                  <input type="checkbox" />
+                  <input
+                    type="checkbox"
+                    checked={allIsChecked}
+                    onChange={() => handleAllCheckBoxes()}
+                  />
                 </td>
               </tr>
               {items &&
                 items.map((item, index) => (
                   <tr key={index}>
                     <td>
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        checked={isCheked[index] || boxBoolian}
+                        onChange={() => {
+                          handleCheckBox(index);
+                        }}
+                      />
                     </td>
                     <td>{item.type}</td>
                     <td>
