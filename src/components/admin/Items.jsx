@@ -15,14 +15,12 @@ function Items({
   };
 
   const handleAllCheckBoxes = () => {
-    const newIsChecked = { ...isChecked };
-
-    for (let i = 0; i < items.length; i++) {
-      newIsChecked[i] = !allIsChecked;
+    const newChecked = { ...isChecked };
+    for (let i = 0; i < items.lenght; i++) {
+      newChecked[i] = !allIsChecked;
     }
-
     setAllIsChecked(!allIsChecked);
-    setIsChecked(newIsChecked);
+    setIsChecked(newChecked);
   };
 
   const iconDelRow = <FcDeleteRow />;
