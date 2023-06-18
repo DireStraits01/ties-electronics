@@ -2,23 +2,29 @@ import React, { useState } from 'react';
 import style from './Items.module.css';
 import PopUp from './PopUp';
 import { FcDeleteRow } from 'react-icons/fc';
-function Items({ items, deleteItemHandle, deleteImageHandle }) {
-  const [isCheked, setIsChecked] = useState({});
+function Items({
+  items,
+  deleteItemHandle,
+  deleteImageHandle,
+  isChecked,
+  setIsChecked,
+}) {
   const [allIsChecked, setAllIsChecked] = useState(false);
-  const [boxBoolian, setBoxBoolian] = useState(false);
   const handleCheckBox = (index) => {
-    setIsChecked({ ...isCheked, [index]: !isCheked[index] });
+    setIsChecked({ ...isChecked, [index]: !isChecked[index] });
   };
 
   const handleAllCheckBoxes = () => {
-    if (!allIsChecked) {
-      setAllIsChecked(true);
-      setBoxBoolian(true);
-    } else {
-      setAllIsChecked(false);
-      setBoxBoolian(false);
+    const newIsChecked = { ...isChecked };
+
+    for (let i = 0; i < items.length; i++) {
+      newIsChecked[i] = !allIsChecked;
     }
+
+    setAllIsChecked(!allIsChecked);
+    setIsChecked(newIsChecked);
   };
+
   const iconDelRow = <FcDeleteRow />;
   return (
     <>
@@ -55,9 +61,10 @@ function Items({ items, deleteItemHandle, deleteImageHandle }) {
                     <td>
                       <input
                         type="checkbox"
-                        checked={isCheked[index] || boxBoolian}
+                        checked={isChecked[index] || false}
                         onChange={() => {
                           handleCheckBox(index);
+                          console.log(isChecked);
                         }}
                       />
                     </td>
@@ -79,7 +86,9 @@ function Items({ items, deleteItemHandle, deleteImageHandle }) {
                           deleteImageHandle(item.image);
                         }}
                       >
-                        <p>textetxtxtetext</p>
+                        <p>
+                          удалить {item.brand} {item.model}?
+                        </p>
                       </PopUp>
                     </td>
                   </tr>

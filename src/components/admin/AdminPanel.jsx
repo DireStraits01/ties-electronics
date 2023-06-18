@@ -30,6 +30,7 @@ function AdminPanel({ items, setItems }) {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState('');
   const [addedImageName, setAddedImageName] = useState(' добавьте изображение');
+  const [isChecked, setIsChecked] = useState({});
 
   const addItem = async () => {
     await addDoc(collection(db, 'items'), {
@@ -64,7 +65,6 @@ function AdminPanel({ items, setItems }) {
   const deleteData = async (id) => {
     await deleteDoc(doc(db, 'items', id));
     const data = await getDocs(collection(db, 'items'));
-    console.log(`data: ${data} and docs: ${data.docs}`);
     setItems(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
@@ -76,6 +76,17 @@ function AdminPanel({ items, setItems }) {
       setImage(e.target.files[0]);
       setAddedImageName(e.target.files[0].name);
     }
+  };
+
+  const deleteCheckedItems = async (isChecked) => {
+    for (const [index, check] of Object.entries(isChecked)) {
+      if (check) {
+        await deleteDoc(doc(db, 'items', items[index].id));
+        await deleteObject(ref(getStorage(), items[index].image));
+      }
+    }
+    const data = await getDocs(collection(db, 'items'));
+    setItems(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
   const fileInput = useRef();
@@ -168,13 +179,15 @@ function AdminPanel({ items, setItems }) {
             </div>
           </PopUp>
           <div>
-            <FcDeleteDatabase />
+            <FcDeleteDatabase onClick={() => deleteCheckedItems(isChecked)} />
           </div>
         </div>
         <Items
           items={items}
           deleteItemHandle={deleteData}
           deleteImageHandle={deleteImage}
+          isChecked={isChecked}
+          setIsChecked={setIsChecked}
         />
       </div>
     </>
