@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 function ImageUpload({ folderType }) {

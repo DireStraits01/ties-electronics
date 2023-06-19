@@ -20,6 +20,7 @@ import Items from './Items';
 import PopUp from './PopUp';
 
 function AdminPanel({ items, setItems }) {
+  // variables for add new items
   const [itemType, setItemType] = useState('laptop');
   const [itemBrand, setItemBrand] = useState('');
   const [itemModel, setItemModel] = useState('');
@@ -31,7 +32,9 @@ function AdminPanel({ items, setItems }) {
   const [imageUrl, setImageUrl] = useState('');
   const [addedImageName, setAddedImageName] = useState(' добавьте изображение');
   const [isChecked, setIsChecked] = useState({});
+  const fileInput = useRef(); // url for image upload
 
+  // add new item to database
   const addItem = async () => {
     await addDoc(collection(db, 'items'), {
       type: itemType,
@@ -62,15 +65,18 @@ function AdminPanel({ items, setItems }) {
     setItemPrice(0);
   };
 
+  //delete item from database only data(without image)
   const deleteData = async (id) => {
     await deleteDoc(doc(db, 'items', id));
     const data = await getDocs(collection(db, 'items'));
     setItems(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
+  // delete image from storage
   const deleteImage = (imagePath) => {
     deleteObject(ref(getStorage(), imagePath));
   };
+
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
       setImage(e.target.files[0]);
@@ -78,6 +84,7 @@ function AdminPanel({ items, setItems }) {
     }
   };
 
+  // delete item or items from database using checkboxes
   const deleteCheckedItems = async (isChecked) => {
     for (const [index, check] of Object.entries(isChecked)) {
       if (check) {
@@ -89,7 +96,6 @@ function AdminPanel({ items, setItems }) {
     setItems(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
 
-  const fileInput = useRef();
   const handleUpload = async () => {
     const storageRef = ref(getStorage(), `${itemType}/${image.name}`);
     const snapshot = await uploadBytes(storageRef, image);

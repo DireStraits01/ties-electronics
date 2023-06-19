@@ -10,10 +10,13 @@ function Items({
   setIsChecked,
 }) {
   const [allIsChecked, setAllIsChecked] = useState(false);
+
+  // checkbox on or off  if clicked
   const handleCheckBox = (index) => {
     setIsChecked({ ...isChecked, [index]: !isChecked[index] });
   };
 
+  // all checkboxes on or all off  if main check cliked
   const handleAllCheckBoxes = () => {
     const newChecked = { ...isChecked };
     for (let i = 0; i < items.lenght; i++) {
