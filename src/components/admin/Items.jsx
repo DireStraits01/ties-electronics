@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import style from './Items.module.css';
 import PopUp from './PopUp';
 import { FcDeleteRow } from 'react-icons/fc';
@@ -9,8 +9,12 @@ function Items({
   isChecked,
   setIsChecked,
 }) {
+  const [typeFilter, setTypeFilter] = useState('');
   const [allIsChecked, setAllIsChecked] = useState(false);
 
+  useEffect(() => {
+    setTypeFilter(items.filter((item) => item.type === typeFilter));
+  }, [items, typeFilter]);
   // checkbox on or off  if clicked
   const handleCheckBox = (index) => {
     setIsChecked({ ...isChecked, [index]: !isChecked[index] });
@@ -19,14 +23,13 @@ function Items({
   // all checkboxes on or all off  if main check cliked
   const handleAllCheckBoxes = () => {
     const newChecked = { ...isChecked };
-    for (let i = 0; i < items.lenght; i++) {
+    for (let i = 0; i < items.length; i++) {
       newChecked[i] = !allIsChecked;
     }
     setAllIsChecked(!allIsChecked);
     setIsChecked(newChecked);
   };
 
-  const iconDelRow = <FcDeleteRow />;
   return (
     <>
       <div className={style.table_backrgound}>
@@ -81,7 +84,7 @@ function Items({
                     <td>{item.price}</td>
                     <td>
                       <PopUp
-                        icon={iconDelRow}
+                        icon={<FcDeleteRow />}
                         saveChanges={() => {
                           deleteItemHandle(item.id);
                           deleteImageHandle(item.image);
