@@ -32,6 +32,7 @@ function AdminPanel({ items, setItems }) {
   const [imageUrl, setImageUrl] = useState('');
   const [addedImageName, setAddedImageName] = useState(' добавьте изображение');
   const [isChecked, setIsChecked] = useState({});
+  const [allIsChecked, setAllIsChecked] = useState(false);
   const fileInput = useRef(); // url for image upload
 
   // add new item to database
@@ -90,10 +91,10 @@ function AdminPanel({ items, setItems }) {
       if (check) {
         await deleteDoc(doc(db, 'items', items[index].id));
         await deleteObject(ref(getStorage(), items[index].image));
-        const data = await getDocs(collection(db, 'items'));
-        setItems(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+        setAllIsChecked(false);
       }
     }
+    setAllIsChecked(false);
     const data = await getDocs(collection(db, 'items'));
     setItems(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
   };
@@ -112,12 +113,11 @@ function AdminPanel({ items, setItems }) {
     }
   }, [imageUrl]);
 
-  const iconAddLine = <FcAddDatabase />;
   return (
     <>
       <div className={style.admin_panel}>
         <div className={style.iconsAdminPanel}>
-          <PopUp icon={iconAddLine} saveChanges={handleUpload}>
+          <PopUp icon={<FcAddDatabase />} saveChanges={handleUpload}>
             <div className={style.AddNewItemOptions}>
               <div className={style.column_input}>
                 <select
@@ -187,7 +187,12 @@ function AdminPanel({ items, setItems }) {
             </div>
           </PopUp>
           <div>
-            <FcDeleteDatabase onClick={() => deleteCheckedItems(isChecked)} />
+            <PopUp
+              icon={<FcDeleteDatabase />}
+              saveChanges={() => deleteCheckedItems(isChecked)}
+            >
+              удалить отмеченные товары?
+            </PopUp>
           </div>
         </div>
         <Items
@@ -196,6 +201,8 @@ function AdminPanel({ items, setItems }) {
           deleteImageHandle={deleteImage}
           isChecked={isChecked}
           setIsChecked={setIsChecked}
+          allIsChecked={allIsChecked}
+          setAllIsChecked={setAllIsChecked}
         />
       </div>
     </>

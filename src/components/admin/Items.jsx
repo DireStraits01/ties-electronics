@@ -9,9 +9,11 @@ function Items({
   deleteImageHandle,
   isChecked,
   setIsChecked,
+  allIsChecked,
+  setAllIsChecked,
 }) {
   // Checkbobex function
-  const [allIsChecked, setAllIsChecked] = useState(false);
+  // const [allIsChecked, setAllIsChecked] = useState(false);
 
   const handleCheckBox = (index) => {
     setIsChecked({ ...isChecked, [index]: !isChecked[index] });
@@ -91,7 +93,8 @@ function Items({
                         }}
                       >
                         <p>
-                          удалить {item.brand} {item.model}?
+                          удалить {item.type}
+                          {item.brand} {item.model}?
                         </p>
                       </PopUp>
                     </td>

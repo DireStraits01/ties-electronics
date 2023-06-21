@@ -17,12 +17,12 @@ function PopUp({ children, icon, saveChanges }) {
 
       <Modal show={show}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title></Modal.Title>
         </Modal.Header>
         <Modal.Body>{children}</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            Выйти
           </Button>
           <Button
             variant="primary"
@@ -31,7 +31,7 @@ function PopUp({ children, icon, saveChanges }) {
               handleClose();
             }}
           >
-            Save Changes
+            Ok
           </Button>
         </Modal.Footer>
       </Modal>
