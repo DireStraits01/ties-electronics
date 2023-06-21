@@ -38,7 +38,7 @@ function App() {
           />
           <Route path="/laptops" element={<Laptops />} />
           <Route path="/pads" element={<Pads />} />
-          <Route path="/cellPhones" element={<CellPhones />} />
+          <Route path="/cellPhones" element={<CellPhones items={items} />} />
           <Route path="/watchs" element={<Watchs />} />
           <Route path="/accessories" element={<Accessories />} />
         </Routes>
