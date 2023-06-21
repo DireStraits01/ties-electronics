@@ -1,21 +1,28 @@
 import React, { useState, useEffect } from 'react';
 
-function FilterItemTable({ items }) {
+function FilterItemTable({ items, func }) {
   const [typeFilter, setTypeFilter] = useState('');
 
   useEffect(() => {
-    setTypeFilter(items.filter((item) => item.type === typeFilter));
+    func(
+      typeFilter === 'all'
+        ? items
+        : items.filter((item) => item.type === typeFilter)
+    );
   }, [items, typeFilter]);
+
   return (
     <>
       <div className="tableFilter">
         <select
           value={typeFilter}
-          onChange={(e) => {
+          onChange={async (e) => {
             setTypeFilter(e.target.value);
           }}
         >
-          <option value="laptops">Laptops</option>
+          <option value="#">filter</option>
+          <option value="all">All items</option>
+          <option value="laptop">Laptops</option>
           <option value="cellphones">Cellphones</option>
           <option value="pads">Pads</option>
           <option value="watch">Watch</option>

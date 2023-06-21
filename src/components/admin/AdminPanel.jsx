@@ -90,6 +90,8 @@ function AdminPanel({ items, setItems }) {
       if (check) {
         await deleteDoc(doc(db, 'items', items[index].id));
         await deleteObject(ref(getStorage(), items[index].image));
+        const data = await getDocs(collection(db, 'items'));
+        setItems(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
       }
     }
     const data = await getDocs(collection(db, 'items'));

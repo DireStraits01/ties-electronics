@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import style from './Items.module.css';
 import PopUp from './PopUp';
 import { FcDeleteRow } from 'react-icons/fc';
+import FilterItemTable from './FilterItemTable';
 function Items({
   items,
   deleteItemHandle,
@@ -9,18 +10,13 @@ function Items({
   isChecked,
   setIsChecked,
 }) {
-  const [typeFilter, setTypeFilter] = useState('');
+  // Checkbobex function
   const [allIsChecked, setAllIsChecked] = useState(false);
 
-  useEffect(() => {
-    setTypeFilter(items.filter((item) => item.type === typeFilter));
-  }, [items, typeFilter]);
-  // checkbox on or off  if clicked
   const handleCheckBox = (index) => {
     setIsChecked({ ...isChecked, [index]: !isChecked[index] });
   };
 
-  // all checkboxes on or all off  if main check cliked
   const handleAllCheckBoxes = () => {
     const newChecked = { ...isChecked };
     for (let i = 0; i < items.length; i++) {
@@ -29,10 +25,14 @@ function Items({
     setAllIsChecked(!allIsChecked);
     setIsChecked(newChecked);
   };
+  //__________________________________________________
+
+  const [filteredItems, setFilteredItems] = useState([]);
 
   return (
     <>
       <div className={style.table_backrgound}>
+        <FilterItemTable items={items} func={setFilteredItems} />
         <div className={style.table_wrapper}>
           <table className={style.fl_table}>
             <thead>
@@ -59,8 +59,8 @@ function Items({
                   />
                 </td>
               </tr>
-              {items &&
-                items.map((item, index) => (
+              {filteredItems &&
+                filteredItems.map((item, index) => (
                   <tr key={index}>
                     <td>
                       <input
